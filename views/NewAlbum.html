@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo Álbum</title>
+</head>
+<body>
+    <h1>Crear un Nuevo Álbum</h1>
+    <form method="POST" action="/albums/new" enctype="multipart/form-data">
+        <label for="albumName">Nombre del Álbum:</label>
+        <input type="text" id="albumName" name="albumName" required/><br><br>
+
+        <label for="artistName">Nombre del Artista:</label>
+        <input type="text" id="artistName" name="artistName" required/><br><br>
+
+        <label for="releaseDate">Fecha de Lanzamiento:</label>
+        <input type="date" id="releaseDate" name="releaseDate" required/><br><br>
+
+        <label for="description">Descripción del Álbum:</label>
+        <textarea id="description" name="description" rows="4" cols="50" required></textarea><br><br>
+
+        <label for="albumImage">Imagen del Álbum (Opcional):</label>
+        <input type="file" id="albumImage" name="albumImage" accept="image/*"/><br><br>
+
+        <label for="songs">Canciones (Opcional, separar por coma):</label>
+        <input type="text" id="songs" name="songs" placeholder="Ejemplo: Canción 1, Canción 2" /><br><br>
+
+        <input type="submit" value="Crear Álbum"/>
+    </form>
+</body>
+</html>
