@@ -1,0 +1,96 @@
+.album-card {
+    background-color: var(--dark-light);
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.3s;
+    position: relative;
+  }
+  
+  .album-card:hover {
+    background-color: var(--gray);
+    transform: translateY(-5px);
+  }
+  
+  .album-cover {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    box-shadow: 0 8px 16px var(--shadow);
+  }
+  
+  .album-title {
+    font-weight: 600;
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .album-artist {
+    font-size: 14px;
+    color: var(--light-gray);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .album-menu {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  
+  .album-card:hover .album-menu {
+    opacity: 1;
+  }
+  
+  .album-menu-dots {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  .album-menu-dot {
+    width: 4px;
+    height: 4px;
+    background-color: var(--white);
+    border-radius: 50%;
+  }
+  
+  .album-dropdown {
+    position: absolute;
+    top: 40px;
+    right: 16px;
+    background-color: var(--gray);
+    border-radius: 4px;
+    box-shadow: 0 4px 12px var(--shadow);
+    z-index: 5;
+    display: none;
+  }
+  
+  .album-dropdown.active {
+    display: block;
+  }
+  
+  .dropdown-item {
+    padding: 10px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  
+  .dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }

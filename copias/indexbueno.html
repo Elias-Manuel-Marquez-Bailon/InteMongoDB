@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <form id="albumForm" method="POST" action="/newalbum" enctype="multipart/form-data">
+    <label for="cover_image">Portada:</label>
+    <input type="file" name="cover_image" id="coverImageInput" required><br><br>
+    <img id="coverPreview" src="#" alt="Vista previa de la portada" style="max-width: 200px; display: none;"><br><br>
+
+
+    <label for="title">Título:</label>
+    <input type="text" name="title" required><br>
+
+    <label for="artist_name">Artista:</label>
+    <input type="text" name="artist_name" required><br>
+
+    <label for="release_date">Fecha de lanzamiento:</label>
+    <input type="date" name="release_date" required><br>
+
+    <label for="genre">Género:</label>
+    <input type="text" name="genre" required><br>
+
+    <label>Canciones:</label>
+    <div id="songsContainer">
+      <div class="song-input">
+        <input type="text" name="songs[]" placeholder="Canción 1" required>
+        <button type="button" class="removeSongBtn">🗑️</button>
+      </div>
+    </div>
+    <button type="button" id="addSongBtn">+ Agregar Canción</button><br><br>
+
+    <button type="submit">Crear Álbum</button>
+  </form>
+
+  <style>
+    .song-input {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .song-input input {
+      flex: 1;
+    }
+
+    .removeSongBtn {
+      margin-left: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2em;
+    }
+  </style>
+
+  <script>
+    //Preview de la imagen 
+    const coverImageInput = document.getElementById('coverImageInput');
+    const coverPreview = document.getElementById('coverPreview');
+
+    coverImageInput.addEventListener('change', () => {
+      const file = coverImageInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+          coverPreview.src = e.target.result;
+          coverPreview.style.display = 'block';
+        };
+
+        reader.readAsDataURL(file); // convierte el archivo en base64
+      } else {
+        coverPreview.src = '#';
+        coverPreview.style.display = 'none';
+      }
+    });
+
+    const songsContainer = document.getElementById('songsContainer');
+    const addSongBtn = document.getElementById('addSongBtn');
+
+    function updatePlaceholders() {
+      const inputs = songsContainer.querySelectorAll('input[name="songs[]"]');
+      inputs.forEach((input, i) => {
+        input.placeholder = `Canción ${i + 1}`;
+      });
+    }
+
+    function createSongInput() {
+      const div = document.createElement('div');
+      div.className = 'song-input';
+
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.name = 'songs[]';
+      input.placeholder = 'Canción';
+      input.required = true;
+
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'removeSongBtn';
+      removeBtn.textContent = '🗑️';
+      removeBtn.addEventListener('click', () => {
+        div.remove();
+        updatePlaceholders();
+      });
+
+      div.appendChild(input);
+      div.appendChild(removeBtn);
+
+      return div;
+    }
+
+    addSongBtn.addEventListener('click', () => {
+      const newSongInput = createSongInput();
+      songsContainer.appendChild(newSongInput);
+      updatePlaceholders();
+    });
+
+    // Agregar funcionalidad al primer botón de eliminar
+    document.querySelectorAll('.removeSongBtn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.target.parentElement.remove();
+        updatePlaceholders();
+      });
+    });
+
+    const form = document.getElementById('albumForm');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+
+
+
+      const songs = formData.getAll('songs[]');
+
+      const data = {
+        title: formData.get('title'),
+        artist_name: formData.get('artist_name'),
+        release_date: formData.get('release_date'),
+        genre: formData.get('genre'),
+        cover_image: formData.get('cover_image'),
+        songs: songs
+      };
+
+      /*const response = await fetch('/newalbum', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });*/
+      const response = await fetch('/newalbum', {
+        method: 'POST',
+        body: formData // sin headers, FormData lo maneja automáticamente
+      });
+
+      if (response.ok) {
+        alert('Álbum creado exitosamente');
+        form.reset();
+        songsContainer.innerHTML = '';
+        songsContainer.appendChild(createSongInput());
+
+        coverPreview.src = '#';
+coverPreview.style.display = 'none';
+
+      } else {
+        alert('Error al crear el álbum se quedo hasta aca');
+      }
+    });
+
+    // Crear el primer input al cargar la página
+    window.addEventListener('DOMContentLoaded', () => {
+      songsContainer.innerHTML = '';
+      songsContainer.appendChild(createSongInput());
+    });
+  </script>
+
+</body>
+
+</html>

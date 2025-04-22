@@ -1,0 +1,167 @@
+const form = document.getElementById('albumForm');
+const fileUploadArea = document.getElementById('fileUploadArea');
+const coverImageInput = document.getElementById('coverImageInput');
+const coverPreview = document.getElementById('coverPreview');
+const songsContainer = document.getElementById('songsContainer');
+const addSongBtn = document.getElementById('addSongBtn');
+const submitBtn = form.querySelector('button[type="submit"]');
+
+let currentAlbumId = null;
+
+// ===== Funciones principales =====
+
+// Manejo de la subida de imagen
+function handleImagePreview() {
+    const file = coverImageInput.files[0];
+    if (file) {
+        const reader = new FileReader();
+        
+        reader.onload = (e) => {
+            coverPreview.src = e.target.result;
+            coverPreview.style.display = 'block';
+        };
+        
+        reader.readAsDataURL(file);
+    } else {
+        coverPreview.src = '#';
+        coverPreview.style.display = 'none';
+    }
+}
+
+// Manejo de canciones
+function createSongInput(value = '', index = null) {
+    const div = document.createElement('div');
+    div.className = 'song-input';
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.name = 'songs[]';
+    input.required = true;
+    input.value = value;
+    input.placeholder = `Canción ${index !== null ? index + 1 : ''}`;
+
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'removeSongBtn';
+    removeBtn.textContent = '🗑️';
+    removeBtn.addEventListener('click', () => {
+        div.remove();
+        updateSongPlaceholders();
+    });
+
+    div.appendChild(input);
+    div.appendChild(removeBtn);
+    return div;
+}
+
+function updateSongPlaceholders() {
+    const inputs = songsContainer.querySelectorAll('input[name="songs[]"]');
+    inputs.forEach((input, i) => {
+        input.placeholder = `Canción ${i + 1}`;
+    });
+}
+
+function initializeSongs(songs = []) {
+    songsContainer.innerHTML = '';
+    if (songs.length > 0) {
+        songs.forEach((song, index) => {
+            songsContainer.appendChild(createSongInput(song, index));
+        });
+    } else {
+        songsContainer.appendChild(createSongInput('', 0));
+    }
+}
+
+function resetForm() {
+    form.reset();
+    form.removeAttribute('data-id');
+    coverPreview.src = '#';
+    coverPreview.style.display = 'none';
+    initializeSongs();
+    coverImageInput.value = '';
+    submitBtn.textContent = 'Crear Álbum';
+    currentAlbumId = null;
+}
+
+// Función para cargar datos en el formulario de edición
+function loadAlbumData(album) {
+    form.querySelector('input[name="title"]').value = album.title || '';
+    form.querySelector('input[name="artist_name"]').value = album.artist_name || '';
+    
+    if (album.release_date) {
+        const date = new Date(album.release_date);
+        form.querySelector('input[name="release_date"]').value = date.toISOString().split('T')[0];
+    }
+    
+    form.querySelector('input[name="genre"]').value = album.genre || '';
+    
+    // Manejar imagen de portada
+    if (album.coverUrl) {
+        coverPreview.src = album.coverUrl;
+        coverPreview.style.display = 'block';
+    }
+    
+    // Configurar canciones
+    initializeSongs(album.songs || []);
+    
+    // Configurar para edición
+    form.setAttribute('data-id', album._id);
+    submitBtn.textContent = 'Actualizar Álbum';
+}
+
+// Función para manejar el envío del formulario
+async function handleFormSubmit(e) {
+    e.preventDefault();
+    
+    const originalBtnText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando...';
+  
+    try {
+        const formData = new FormData(form);
+        const albumId = form.getAttribute('data-id');
+        const url = albumId ? `/album/${albumId}` : '/newalbum';
+        const method = albumId ? 'PUT' : 'POST';
+
+        const response = await fetch(url, {
+            method,
+            body: formData
+        });
+    
+        if (!response.ok) {
+            throw new Error(await response.text());
+        }
+        
+        const result = await response.json();
+        alert(result.message || (albumId ? 'Álbum actualizado' : 'Álbum creado'));
+        resetForm();
+        
+        if (typeof loadAlbums === 'function') {
+            loadAlbums();
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert(error.message || 'Error al procesar la solicitud');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalBtnText;
+    }
+}
+
+// ===== Event Listeners =====
+
+fileUploadArea.addEventListener('click', () => coverImageInput.click());
+coverImageInput.addEventListener('change', handleImagePreview);
+
+addSongBtn.addEventListener('click', () => {
+    const songInputs = songsContainer.querySelectorAll('.song-input');
+    songsContainer.appendChild(createSongInput('', songInputs.length));
+    updateSongPlaceholders();
+});
+
+form.addEventListener('submit', handleFormSubmit);
+
+// Inicialización
+window.addEventListener('DOMContentLoaded', () => {
+    initializeSongs();
+});

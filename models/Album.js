@@ -1,10 +1,9 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const AlbumSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true,
-    trim: true
+    required: true
   },
   artist_name: {
     type: String,
@@ -14,17 +13,25 @@ const AlbumSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
-  cover_image: {
-    type: String
-  },
   genre: {
     type: String,
     required: true
   },
-  songs: [{
-    type: String  // Ahora es un arreglo de strings (nombres de las canciones)
-  }]
-}, { timestamps: true });
+  songs: {
+    type: [String],
+    required: true
+  },
+  cover_image: {
+    data: Buffer,
+    contentType: String,
+    name: String,
+    size: Number
+  },
+  created_at: {
+    type: Date,
+    default: Date.now
+  }
+});
 
 const Album = mongoose.model('Album', AlbumSchema);
 

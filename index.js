@@ -1,30 +1,45 @@
 import express from 'express';
+import router from './routes/musica.js';
+import {connectDB} from './config/Mongodb.js';
+import fileUpload from "express-fileupload";
+
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public')); 
+app.use(fileUpload()); // Para manejar archivos
+
+
+// Iniciar servidor
+app.listen(PORT, () => {
+    console.log(`El servidor está ejecutándose en el puerto ${PORT}`);
+});
+
+
+// Intentar conectar a la base de datos 
+connectDB();
+
+
+
+//Asignamos las rutas
+app.use('/', router);
+
+/*
 import { router as musica } from './routes/musica.js';
 import dotenv from 'dotenv';
 import fileUpload from 'express-fileupload';
 import { MongoClient, GridFSBucket, ObjectId } from 'mongodb';
+import mongoose from 'mongoose';
 
 // Cargar variables de entorno
 dotenv.config();
 
-// Conexión a MongoDB
-const uri = `mongodb+srv://${process.env.DBUSER}:${process.env.DBPASSWORD}@${process.env.DBHOSTNAME}/?retryWrites=true&w=majority`;
-const client = new MongoClient(uri);
 
-// Intentar conectar a la base de datos una vez al inicio
-const connect = async () => {
-    try {
-        await client.connect();
-        console.log("Conexión exitosa a la base de datos");
-        return client.db(process.env.DBNAME);
-    } catch (error) {
-        console.error("Error al conectar con la base de datos", error);
-        process.exit(1); // Termina el proceso si no puede conectar
-    }
-};
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+
 
 // Middleware
 app.use(express.json());
@@ -93,7 +108,4 @@ app.get('/download/:id', async (req, res) => {
     }
 });
 
-// Iniciar servidor
-app.listen(PORT, () => {
-    console.log(`El servidor está ejecutándose en el puerto ${PORT}`);
-});
+*/
