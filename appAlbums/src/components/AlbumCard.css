@@ -1,0 +1,181 @@
+/* AlbumCard.css */
+.album-card {
+    background-color: var(--dark-light);
+    border-radius: 8px;
+    padding: 16px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .album-card:hover {
+    background-color: var(--gray);
+    transform: translateY(-5px);
+  }
+  
+  /* Estilos para la portada del álbum */
+  .album-cover {
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    box-shadow: 0 8px 16px var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .album-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .default-cover {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--dark);
+    color: var(--white);
+    font-size: 3rem;
+  }
+  
+  /* Estilos para la información del álbum */
+  .album-info {
+    color: var(--white);
+  }
+  
+  .album-title {
+    font-weight: 600;
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 4px;
+  }
+  
+  .album-artist {
+    font-size: 14px;
+    color: var(--light-gray);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 8px;
+  }
+  
+  .album-details {
+    font-size: 12px;
+    color: var(--light-gray);
+    margin-bottom: 12px;
+  }
+  
+  /* Estilos para la lista de canciones */
+  .songs-list {
+    margin-top: 12px;
+  }
+  
+  .songs-list h4 {
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: var(--light-gray);
+  }
+  
+  .songs-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .songs-list li {
+    font-size: 13px;
+    padding: 4px 0;
+    color: var(--light-gray);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Estilos para el menú de opciones */
+  .album-menu-container {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 10;
+  }
+  
+  .album-menu-button {
+    background: rgba(0, 0, 0, 0.7);
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+    padding: 0;
+  }
+  
+  .album-card:hover .album-menu-button {
+    opacity: 1;
+  }
+  
+  .album-menu-dot {
+    width: 4px;
+    height: 4px;
+    background-color: var(--white);
+    border-radius: 50%;
+    margin: 1.5px 0;
+  }
+  
+  .album-dropdown-menu {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background-color: var(--gray);
+    border-radius: 4px;
+    box-shadow: 0 4px 12px var(--shadow);
+    z-index: 20;
+    min-width: 120px;
+    overflow: hidden;
+  }
+  
+  .dropdown-item {
+    color: var(--white);
+    text-align: left;
+    padding: 10px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    background: none;
+    border: none;
+    width: 100%;
+    display: block;
+    text-align: left;
+  }
+  
+  .dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Estilos para el efecto de hover en las tarjetas */
+  .album-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.7));
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  
+  .album-card:hover::before {
+    opacity: 1;
+  }

@@ -1,0 +1,150 @@
+/* AlbumForm.css */
+
+form {
+    padding: 1.5rem;
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .form-group input[type="text"],
+  .form-group input[type="date"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+  }
+  
+  .form-group input[type="text"]:focus,
+  .form-group input[type="date"]:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+  }
+  
+  .file-upload {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .file-upload:hover {
+    border-color: #4a90e2;
+    background-color: #f8f9fa;
+  }
+  
+  .file-upload-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .file-upload-text {
+    color: #666;
+  }
+  
+  #coverPreview {
+    max-width: 100%;
+    max-height: 200px;
+    display: block;
+    margin: 0 auto;
+    border-radius: 4px;
+  }
+  
+  .songs-container {
+    margin-bottom: 1rem;
+  }
+  
+  .song-input {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  
+  .song-input input {
+    flex: 1;
+    margin-right: 0.5rem;
+  }
+  
+  .removeSongBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #dc3545;
+    font-size: 1.2rem;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .removeSongBtn:hover {
+    color: #a71d2a;
+  }
+  
+  #addSongBtn {
+    background: none;
+    border: 1px solid #4a90e2;
+    color: #4a90e2;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+  
+  #addSongBtn:hover {
+    background-color: #e7f1fd;
+  }
+  
+  .submit-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .submit-btn:hover {
+    background-color: #3a7bc8;
+  }
+  
+  /* Estilos para el input de archivo oculto */
+  #coverImageInput {
+    display: none;
+  }
+  
+  /* Estilos para la vista previa de la imagen */
+  .file-upload.has-preview {
+    padding: 0.5rem;
+    border-style: solid;
+  }
+  
+  /* Estilos responsivos */
+  @media (max-width: 768px) {
+    form {
+      padding: 1rem;
+    }
+    
+    .file-upload {
+      padding: 1.5rem;
+    }
+  }
