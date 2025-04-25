@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import Header from '../components/Header';
 import AlbumGallery from '../components/AlbumGallery';
-import Modal from '../components/Modal';
-import AlbumForm from '../components/AlbumForm';
+
 //import '../styles/styles.css';
 
 const MusicCollection = () => {
@@ -30,16 +28,11 @@ const MusicCollection = () => {
 
   return (
     <div className="container">
-      <Header 
-        onSearch={setSearchTerm} 
-        onAddAlbum={() => setIsModalOpen(true)} 
-      />
+      
       
       <AlbumGallery albums={filteredAlbums} />
       
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <AlbumForm onSubmit={handleAddAlbum} />
-      </Modal>
+      
     </div>
   );
 };

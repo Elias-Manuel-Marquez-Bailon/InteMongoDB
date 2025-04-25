@@ -3,7 +3,7 @@ import AlbumCard from './AlbumCard';
 import AlbumForm from './AlbumForm';
 import Modal from './Modal';
 import { albumService } from '../api/axios';
-import './styles.css';
+import './AlbumGallery.css';
 
 const AlbumGallery = () => {
   const [albums, setAlbums] = useState([]);
@@ -109,15 +109,17 @@ const AlbumGallery = () => {
         </div>
       )}
 
-      {isModalOpen && (
-        <Modal isOpen={isModalOpen} onClose={handleCancel}>
-          <AlbumForm
-            albumData={editingAlbum}
-            onSubmit={handleFormSubmit}
-            onCancel={handleCancel}
-          />
-        </Modal>
-      )}
+      <Modal 
+        isOpen={isModalOpen} 
+        onClose={handleCancel}
+        title={editingAlbum ? 'Editar Álbum' : 'Nuevo Álbum'}
+      >
+        <AlbumForm
+          albumData={editingAlbum}
+          onSubmit={handleFormSubmit}
+          onCancel={handleCancel}
+        />
+      </Modal>
     </div>
   );
 };

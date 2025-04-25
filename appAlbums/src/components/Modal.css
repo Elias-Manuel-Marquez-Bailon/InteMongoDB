@@ -1,43 +1,99 @@
 .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.modal {
-  background: white;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 500px;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  border-bottom: 1px solid #eee;
-}
-
-.modal-title {
-  margin: 0;
-  font-size: 1.25rem;
-}
-
-.modal-close {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0 0.5rem;
-}
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7); /* Oscurecido más para mayor contraste */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(3px); /* Efecto de desenfoque para un look más moderno */
+  }
+  
+  .modal {
+    background: var(--dark-light); /* Usando la variable del tema */
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); /* Sombra más pronunciada */
+    border: 1px solid var(--gray); /* Borde sutil */
+    color: var(--white);
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--gray);
+  }
+  
+  .modal-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--white);
+  }
+  
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--light-gray);
+    padding: 0 0.5rem;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+  }
+  
+  .modal-close:hover {
+    color: var(--white);
+    background-color: var(--gray);
+  }
+  
+  .modal-content {
+    padding: 1.5rem;
+  }
+  
+  /* Estilos para la barra de desplazamiento en el modal */
+  .modal::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .modal::-webkit-scrollbar-track {
+    background: var(--dark);
+  }
+  
+  .modal::-webkit-scrollbar-thumb {
+    background: var(--gray);
+    border-radius: 4px;
+  }
+  
+  .modal::-webkit-scrollbar-thumb:hover {
+    background: var(--light-gray);
+  }
+  
+  /* Animación para el modal */
+  @keyframes modalFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .modal {
+    animation: modalFadeIn 0.3s ease-out;
+  }
