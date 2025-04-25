@@ -11,9 +11,7 @@ api.interceptors.request.use((config) => {
     // Configuración específica para FormData
     config.headers['Content-Type'] = 'multipart/form-data';
     
-    // Agregar boundary automáticamente
-    const boundary = '----WebKitFormBoundary' + Math.random().toString(16).substr(2);
-    config.headers['Content-Type'] = `multipart/form-data; boundary=${boundary}`;
+    
   }
   return config;
 }, (error) => {
@@ -44,37 +42,42 @@ export const albumService = {
   crear: async (albumData) => {
     try {
       const formData = new FormData();
-      
-      // Agregar campos básicos
+  
       formData.append('title', albumData.title);
       formData.append('artist_name', albumData.artist_name);
       formData.append('release_date', albumData.release_date);
       formData.append('genre', albumData.genre);
-      
-      // Agregar canciones
-      if (albumData.songs && Array.isArray(albumData.songs)) {
-        albumData.songs.forEach((song, index) => {
-          if (song.trim() !== '') {
-            formData.append(`songs[${index}]`, song);
-          }
+  
+      // Validar y agregar canciones como un arreglo
+    if (albumData.songs && Array.isArray(albumData.songs)) {
+        const validSongs = albumData.songs.filter(song => song.trim() !== ''); // Filtrar canciones vacías
+        if (validSongs.length === 0) {
+          throw new Error('Debe agregar al menos una canción');
+        }
+        validSongs.forEach(song => {
+          formData.append('songs[]', song); // Enviar como 'songs[]' para que el backend lo interprete como un arreglo
         });
+      } else {
+        throw new Error('Las canciones deben ser un arreglo');
       }
-      
-      // Agregar imagen si existe
+  
+      // Imagen
       if (albumData.cover_image instanceof File) {
         formData.append('cover_image', albumData.cover_image);
       } else if (typeof albumData.cover_image === 'string') {
-        // Si es base64, convertirlo a Blob
         const blob = await fetch(albumData.cover_image).then(r => r.blob());
         formData.append('cover_image', blob, 'cover.jpg');
       }
-      
-      return await api.post('/newalbum', formData);
+  
+       // Realizar la petición POST
+    const result = await api.post('/newalbum', formData);
+    console.log('Álbum creado:', result);
+    return result;
     } catch (error) {
-      console.error('Error al preparar FormData:', error);
+      console.error('Error al crear álbum:', error);
       throw error;
     }
-  },
+  },  
   
   actualizar: (id, albumData) => {
     if (albumData.cover_image instanceof File || typeof albumData.cover_image === 'string') {
