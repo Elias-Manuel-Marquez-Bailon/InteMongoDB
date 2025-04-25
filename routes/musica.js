@@ -3,6 +3,18 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 import Album from '../models/Album.js';
+import cors from 'cors';
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Configuración mejorada de CORS
+const corsOptions = {
+  origin: ['http://localhost:3000', 'http://intedba-env.eba-8rhdcqh2.us-east-1.elasticbeanstalk.com'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token'],
+  credentials: true
+};
 
 
 import {getAlbums, getAlbumById, createAlbum, updateAlbum, deleteAlbum} from "../controller/AlbumController.js"
