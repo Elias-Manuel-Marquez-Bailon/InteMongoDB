@@ -42,7 +42,8 @@ const AlbumGallery = () => {
     if (window.confirm('¿Estás seguro de eliminar este álbum?')) {
       try {
         await albumService.eliminar(id);
-        fetchAlbums();
+        // Eliminar el álbum directamente del estado
+        setAlbums(albums.filter((album) => album._id !== id));
       } catch (error) {
         console.error('Error al eliminar el álbum:', error);
         alert('No se pudo eliminar el álbum');
@@ -55,20 +56,23 @@ const AlbumGallery = () => {
       if (editingAlbum) {
         // Actualizar álbum existente
         await albumService.actualizar(editingAlbum._id, albumData);
+        // Actualizar el álbum directamente en el estado
+        setAlbums(albums.map(album => 
+          album._id === editingAlbum._id ? { ...album, ...albumData } : album
+        ));
         alert('Álbum actualizado correctamente');
       } else {
         // Crear nuevo álbum
-        await albumService.crear(albumData);
+        const newAlbum = await albumService.crear(albumData);
+        // Agregar el nuevo álbum directamente al estado
+        setAlbums([...albums, newAlbum]);
         alert('Álbum creado correctamente');
       }
       setIsModalOpen(false);
       setEditingAlbum(null);
-      await fetchAlbums();
-      return true;
     } catch (error) {
       console.error('Error al guardar el álbum:', error);
       alert('Error al guardar el álbum: ' + (error.message || 'Error desconocido'));
-      return false;
     }
   };
 
